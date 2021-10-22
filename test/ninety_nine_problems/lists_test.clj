@@ -60,5 +60,9 @@
     (is (= (flatten' '(:a :b :c :d :e)) '(:a :b :c :d :e)))))
 
 (deftest eliminate-consecutive-duplicates-test
-  (testing "should do nothing for an empty list"
-    (is (= (eliminate-consecutive-duplicates '())) '())))
+  ;(testing "should do nothing for an empty list"
+  ;  (is (= (eliminate-consecutive-duplicates '())) '()))
+  ;(testing "should do nothing for a list with no consecutive duplicates"
+  ;  (is (= (eliminate-consecutive-duplicates '(:a :b :a :b)) '(:a :b :a :b))))
+  (testing "should remove consecutive duplicates"
+    (is (= (eliminate-consecutive-duplicates '(:a :b :b :c :d :d :b)) '(:a :b :c :d :b)))))

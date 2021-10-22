@@ -75,6 +75,9 @@
        [[first second & tail :as all] acc]
        (cond
          (empty? all) acc
+         (nil? second) (concat acc (list first))
          (= first second) (recur tail (concat acc (list first)))
-         :else (recur tail (concat acc (list first second)))))]
+         :else (recur (concat (list second) tail) (concat acc (list first)))))]
     (inner coll ())))
+
+
