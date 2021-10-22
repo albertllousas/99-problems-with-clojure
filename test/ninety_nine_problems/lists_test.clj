@@ -4,21 +4,21 @@
 
 (def empty-list ())
 
-(deftest find-the-last-element-test
+(deftest last-test
   (testing "should find nothing when the list is empty"
-    (is (= nil (find-the-last-element empty-list))))
+    (is (= nil (last' empty-list))))
   (testing "should find the only element for a singleton list"
-    (is (= :a (find-the-last-element '(:a)))))
+    (is (= :a (last' '(:a)))))
   (testing "should find the last element for a list of more than one element"
-    (is (= :c (find-the-last-element '(:a :b :c))))))
+    (is (= :c (last' '(:a :b :c))))))
 
-(deftest find-the-last-but-one-element-test
+(deftest last-but-one-test
   (testing "should find nothing when the list is empty"
-    (is (= nil (find-the-last-but-one-element empty-list))))
+    (is (= nil (last-but-one empty-list))))
   (testing "should find nothing for a singleton list"
-    (is (= nil (find-the-last-but-one-element '(:a)))))
+    (is (= nil (last-but-one '(:a)))))
   (testing "should find the last element but one for a list of more than one element"
-    (is (= :b (find-the-last-but-one-element '(:a :b :c))))))
+    (is (= :b (last-but-one '(:a :b :c))))))
 
 (deftest find-the-kth-element-test
   (testing "should find nothing when the list is empty"
@@ -66,3 +66,9 @@
     (is (= (eliminate-consecutive-duplicates '(:a :b :a :b)) '(:a :b :a :b))))
   (testing "should remove consecutive duplicates"
     (is (= (eliminate-consecutive-duplicates '(:a :b :b :c :d :d :b)) '(:a :b :c :d :b)))))
+
+(deftest pack-consecutive-duplicates-test
+  (testing "should do nothing for an empty list"
+    (is (= (pack-consecutive-duplicates '()) '())))
+  (testing "should pack consecutive duplicate into a sublists"
+    (is (= (pack-consecutive-duplicates '(:a :b :b :c :d :d :d)) (list (list :a) (list :b :b) (list :c) (list :d :d :d))))))

@@ -3,14 +3,14 @@
 ;; all solutions without the use of clojure built-in fns to operate with lists
 
 ;; P01
-(defn find-the-last-element
+(defn last'
   [[first & remaining]]
   (cond
     (empty? remaining) first
     :else (recur remaining)))
 
 ;; P02
-(defn find-the-last-but-one-element
+(defn last-but-one
   [[first second & remaining]]
   (cond
     (and (nil? second) (empty? remaining)) nil
@@ -81,6 +81,20 @@
     (inner coll ())))
 
 ;; P09
-(defn pack-consecutive-duplicates-into-sublists
+(defn pack-consecutive-duplicates
   [coll]
+  (letfn
+    [(inner
+       [[first & tail :as all] acc]
+       (cond
+         (empty? all) acc
+         (not= first (last' (last' acc))) (recur tail (add-new-sublist acc first))
+         :else (recur tail (append-to-last-sublist acc first))))
+     (add-new-sublist
+       [acc new-element]
+       (concat acc (list (list new-element))))
+     (append-to-last-sublist
+       [acc consecutive-element]
+       (concat (drop-last acc) (list (concat (last' acc) (list consecutive-element)))))]
+    (inner coll '()))
   )
