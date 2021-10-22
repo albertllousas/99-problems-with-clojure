@@ -80,4 +80,7 @@
          :else (recur (concat (list second) tail) (concat acc (list first)))))]
     (inner coll ())))
 
-
+;; P09
+(defn pack-consecutive-duplicates-into-sublists
+  [coll]
+  )
