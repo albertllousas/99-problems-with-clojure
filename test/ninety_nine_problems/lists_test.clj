@@ -72,3 +72,11 @@
     (is (= (pack-consecutive-duplicates '()) '())))
   (testing "should pack consecutive duplicate into a sublists"
     (is (= (pack-consecutive-duplicates '(:a :b :b :c :d :d :d)) (list (list :a) (list :b :b) (list :c) (list :d :d :d))))))
+
+(deftest encode-test
+  (testing "should do nothing for an empty list"
+    (is (= (encode '()) '())))
+  (testing "should do nothing for a list without consecutive duplicates"
+    (is (= (encode '(:a :b :c)) '(:a :b :c))))
+  (testing "should encode a list with consecutive duplicates, encoding only duplicates as [#element,element]"
+    (is (= (encode '(:a :b :b :c :d :d :b)) (list :a (list 2 :b) :c (list 2 :d) :b)))))

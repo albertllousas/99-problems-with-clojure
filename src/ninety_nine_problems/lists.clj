@@ -98,3 +98,14 @@
        (concat (drop-last acc) (list (concat (last' acc) (list consecutive-element)))))]
     (inner coll '()))
   )
+
+(defn encode
+  [coll]
+  (letfn
+     [(inner
+        [[first & tail :as all] acc]
+        (cond
+          (empty? all) acc
+          (= (count' first) 1) (recur tail (concat acc first))
+          :else (recur tail (concat acc (list (list (count' first) (last' first)))))))]
+  (inner (pack-consecutive-duplicates coll) '())))
