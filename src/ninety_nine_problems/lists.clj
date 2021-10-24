@@ -57,11 +57,10 @@
 
 ;; P05 tail-recursive
 (defn reverse'' [coll]
-  (letfn
-    [(inner [[head & tail] acc]
-       (if (nil? head)
-         acc
-         (recur tail (concat (list head) acc))))]
+  (letfn [(inner [[head & tail] acc]
+            (if (nil? head)
+              acc
+              (recur tail (concat (list head) acc))))]
     (inner coll ())))
 
 ;; P05 - with built-in functions
@@ -69,11 +68,11 @@
   (reduce (fn [acc element] (cons element acc)) '() coll))
 
 ;; P06
-(defn is-palindrome [coll] (= coll (reverse' coll)))
+(defn is-palindrome [coll]
+  (= coll (reverse' coll)))
 
 ;; P07
-(defn flatten'
-  [coll]
+(defn flatten' [coll]
   (letfn
     [(inner [[head & tail] acc]
        (cond
@@ -83,8 +82,7 @@
     (inner coll ())))
 
 ;; P08
-(defn eliminate-consecutive-duplicates
-  [coll]
+(defn eliminate-consecutive-duplicates [coll]
   (letfn
     [(inner [[first second & tail :as all] acc]
        (cond
@@ -93,6 +91,19 @@
          (= first second) (recur tail (concat acc (list first)))
          :else (recur (concat (list second) tail) (concat acc (list first)))))]
     (inner coll ())))
+
+;; P08 - with built-in functions
+(defn eliminate-consecutive-duplicates' [coll]
+  (reduce
+    (fn [acc element]
+      (if (= (last acc) element)
+        acc
+        (concat acc (list element))))
+    '()
+    coll))
+
+(defn eliminate-consecutive-duplicates'' [coll]
+  (dedupe coll))
 
 ;; P09
 (defn pack-consecutive-duplicates
@@ -110,15 +121,31 @@
     (inner coll '()))
   )
 
+;; P09 - with built-in functions
+(defn pack-consecutive-duplicates' [coll]
+  (partition-by (fn [x] x) coll))
+
+;; P10
 (defn encode [coll]
   (letfn
-     [(inner [[first & tail :as all] acc]
-        (cond
-          (empty? all) acc
-          (= (count' first) 1) (recur tail (concat acc first))
-          :else (recur tail (concat acc (list (list (count' first) (last' first)))))))]
-  (inner (pack-consecutive-duplicates coll) '())))
+    [(inner [[first & tail :as all] acc]
+       (cond
+         (empty? all) acc
+         (= (count' first) 1) (recur tail (concat acc (list (list 1 (last' first)))))
+         :else (recur tail (concat acc (list (list (count' first) (last' first)))))))]
+    (inner (pack-consecutive-duplicates coll) '())))
 
+;; P10
+(defn encode' [coll]
+  (->> (partition-by identity coll)
+       (map (fn [sublist] (list (count sublist) (first sublist))))))
+
+
+;; P11
+(defn modified-encode [coll]
+  (->> (encode' coll)
+       (map (fn [sublist] (if (= 1 (first sublist)) (last sublist) sublist)))))
+;; P12
 (defn decode [coll]
   (letfn
     [(inner [[first & tail :as all] acc]

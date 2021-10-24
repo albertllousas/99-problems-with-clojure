@@ -90,25 +90,44 @@
 
 (deftest eliminate-consecutive-duplicates-test
   (testing "should do nothing for an empty list"
-    (is (= (eliminate-consecutive-duplicates '())) '()))
+    (do
+      (is (= (eliminate-consecutive-duplicates empty-list)) empty-list)
+      (is (= (eliminate-consecutive-duplicates' empty-list)) empty-list)
+      (is (= (eliminate-consecutive-duplicates'' empty-list)) empty-list)))
   (testing "should do nothing for a list with no consecutive duplicates"
-    (is (= (eliminate-consecutive-duplicates '(:a :b :a :b)) '(:a :b :a :b))))
+    (do
+      (is (= (eliminate-consecutive-duplicates '(:a :b :a :b)) '(:a :b :a :b)))
+      (is (= (eliminate-consecutive-duplicates' '(:a :b :a :b)) '(:a :b :a :b)))
+      (is (= (eliminate-consecutive-duplicates'' '(:a :b :a :b)) '(:a :b :a :b)))))
   (testing "should remove consecutive duplicates"
-    (is (= (eliminate-consecutive-duplicates '(:a :b :b :c :d :d :b)) '(:a :b :c :d :b)))))
+    (do
+      (is (= (eliminate-consecutive-duplicates '(:a :b :b :c :d :d :b)) '(:a :b :c :d :b)))
+      (is (= (eliminate-consecutive-duplicates' '(:a :b :b :c :d :d :b)) '(:a :b :c :d :b)))
+      (is (= (eliminate-consecutive-duplicates'' '(:a :b :b :c :d :d :b)) '(:a :b :c :d :b))))))
 
 (deftest pack-consecutive-duplicates-test
   (testing "should do nothing for an empty list"
-    (is (= (pack-consecutive-duplicates '()) '())))
+    (is (= (pack-consecutive-duplicates empty-list) empty-list)))
   (testing "should pack consecutive duplicate into a sublists"
     (is (= (pack-consecutive-duplicates '(:a :b :b :c :d :d :d)) (list (list :a) (list :b :b) (list :c) (list :d :d :d))))))
 
 (deftest encode-test
   (testing "should do nothing for an empty list"
-    (is (= (encode '()) '())))
-  (testing "should do nothing for a list without consecutive duplicates"
-    (is (= (encode '(:a :b :c)) '(:a :b :c))))
+    (do
+      (is (= (encode '()) '()))
+      (is (= (encode' '()) '()))))
+  (testing "should encode a list with consecutive duplicates, encoding elements [#element,element]"
+    (do
+      (is (= (encode '(:a :b :b :c :d :d :b)) (list (list 1 :a) (list 2 :b) (list 1 :c) (list 2 :d) (list 1 :b))))
+      (is (= (encode' '(:a :b :b :c :d :d :b)) (list (list 1 :a) (list 2 :b) (list 1 :c) (list 2 :d) (list 1 :b)))))))
+
+(deftest modified-encode-test
+  (testing "should do nothing for an empty list"
+    (do
+      (is (= (modified-encode '()) '()))))
   (testing "should encode a list with consecutive duplicates, encoding only duplicates as [#element,element]"
-    (is (= (encode '(:a :b :b :c :d :d :b)) (list :a (list 2 :b) :c (list 2 :d) :b)))))
+    (do
+      (is (= (modified-encode '(:a :b :b :c :d :d :b)) (list :a (list 2 :b) :c (list 2 :d) :b))))))
 
 (deftest decode-test
   (testing "should do nothing for an empty list"
