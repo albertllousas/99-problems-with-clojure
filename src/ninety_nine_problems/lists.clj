@@ -194,3 +194,20 @@
 ;; P15 - with built-in functions
 (defn duplicate-each-n-times' [coll n]
   (mapcat #(repeat n %) coll))
+
+;; P16
+(defn drop-every-nth [coll n]
+  (letfn
+    [(inner [[head & tail :as all] n index acc]
+       (cond
+         (empty? all) acc
+         (= 0 (rem index n)) (recur tail n (inc index) acc)
+         :else (recur tail n (inc index) (concat acc (list head)))
+         ))]
+    (inner coll n 1 '())))
+
+;; P16 - with built-in functions
+(defn drop-every-nth' [coll n]
+  (->> (map-indexed #(hash-map :index %1 :value %2) coll)
+       (filter #(not= 0 (rem (inc (get % :index)) n)))
+       (map #(get % :value))))

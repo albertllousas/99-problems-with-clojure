@@ -151,3 +151,9 @@
     (do
       (is (= (duplicate-each-n-times '(:a :b) 3) '(:a :a :a :b :b :b)))
       (is (= (duplicate-each-n-times' '(:a :b) 3) '(:a :a :a :b :b :b))))))
+
+(deftest drop-every-nth-test
+  (testing "should drop every N'th element from a given list"
+    (do
+      (is (= (drop-every-nth '(:a :b :c :d :e :f :g :h :i :k) 3) '(:a :b :d :e :g :h :k)))
+      (is (= (drop-every-nth' '(:a :b :c :d :e :f :g :h :i :k) 3) '(:a :b :d :e :g :h :k))))))
