@@ -6,43 +6,72 @@
 
 (deftest last-test
   (testing "should find nothing when the list is empty"
-    (is (= nil (last' empty-list))))
+    (do
+      (is (= nil (last' empty-list)))
+      (is (= nil (last'' empty-list)))
+      (is (= nil (last''' empty-list)))))
   (testing "should find the only element for a singleton list"
-    (is (= :a (last' '(:a)))))
+    (do
+      (is (= :a (last' '(:a))))
+      (is (= :a (last'' '(:a))))
+      (is (= :a (last''' '(:a))))))
   (testing "should find the last element for a list of more than one element"
-    (is (= :c (last' '(:a :b :c))))))
+    (do
+      (is (= :c (last' '(:a :b :c))))
+      (is (= :c (last'' '(:a :b :c))))
+      (is (= :c (last''' '(:a :b :c)))))))
 
 (deftest last-but-one-test
   (testing "should find nothing when the list is empty"
-    (is (= nil (last-but-one empty-list))))
+    (do
+      (is (= nil (last-but-one empty-list)))
+      (is (= nil (last-but-one' empty-list)))))
   (testing "should find nothing for a singleton list"
-    (is (= nil (last-but-one '(:a)))))
+    (do
+      (is (= nil (last-but-one '(:a))))
+      (is (= nil (last-but-one' '(:a))))))
   (testing "should find the last element but one for a list of more than one element"
-    (is (= :b (last-but-one '(:a :b :c))))))
+    (do
+      (is (= :b (last-but-one '(:a :b :c))))
+      (is (= :b (last-but-one' '(:a :b :c)))))))
 
 (deftest find-the-kth-element-test
   (testing "should find nothing when the list is empty"
-    (is (= nil (find-the-kth-element empty-list 1))))
+    (do
+      (is (= nil (find-the-kth-element empty-list 1)))
+      (is (= nil (find-the-kth-element' empty-list 1)))))
   (testing "should find nothing for the list is shorter than k"
-    (is (= nil (find-the-kth-element '(:a) 10))))
+    (do
+      (is (= nil (find-the-kth-element '(:a) 10)))
+      (is (= nil (find-the-kth-element' '(:a) 10)))))
   (testing "should find the k element for a list"
-    (is (= :b (find-the-kth-element '(:a :b :c) 2)))))
+    (do
+      (is (= :b (find-the-kth-element '(:a :b :c) 2)))
+      (is (= :b (find-the-kth-element' '(:a :b :c) 2))))))
 
 (deftest count-test
   (testing "should count zero when a list is empty"
-    (is (= 0 (count' empty-list))))
+    (do
+      (is (= 0 (count' empty-list)))
+      (is (= 0 (count'' empty-list)))
+      (is (= 0 (count''' empty-list)))))
   (testing "should count the number of elements of a non-empty list"
-    (is (= 3 (count' '(:a :b :c))))))
+    (do
+      (is (= 3 (count' '(:a :b :c))))
+      (is (= 3 (count'' '(:a :b :c))))
+      (is (= 3 (count''' '(:a :b :c)))))))
 
 (deftest reverse-test
   (testing "should do nothing for an empty list"
-    (is (and
-           (= (reverse' empty-list) empty-list)
-           (= (reverse'' empty-list) empty-list))))
+    (do
+      (is (= (reverse' empty-list) empty-list))
+      (is (= (reverse'' empty-list) empty-list))
+      (is (= (reverse''' empty-list) empty-list))))
   (testing "should do nothing for a non-empty list"
-    (is (and
-          (= (reverse' '(:a :b :c)) '(:c :b :a))
-          (= (reverse'' '(:a :b :c)) '(:c :b :a))))))
+    (do
+      (is (= (reverse' '(:a :b :c)) '(:c :b :a)))
+      (is (= (reverse'' '(:a :b :c)) '(:c :b :a)))
+      (is (= (reverse''' '(:a :b :c)) '(:c :b :a))))))
 
 (deftest is-palindrome-test
   (are [expected i] (= expected (is-palindrome i))
@@ -80,3 +109,9 @@
     (is (= (encode '(:a :b :c)) '(:a :b :c))))
   (testing "should encode a list with consecutive duplicates, encoding only duplicates as [#element,element]"
     (is (= (encode '(:a :b :b :c :d :d :b)) (list :a (list 2 :b) :c (list 2 :d) :b)))))
+
+(deftest decode-test
+  (testing "should do nothing for an empty list"
+    (is (= (decode '()) '())))
+  (testing "should decode elements in a list like [#element,element] to the expanded version"
+    (is (= (decode (list :a (list 2 :b) :c (list 2 :d) :b)) '(:a :b :b :c :d :d :b)))))
