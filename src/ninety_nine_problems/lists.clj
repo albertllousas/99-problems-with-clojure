@@ -109,11 +109,11 @@
 (defn pack-consecutive-duplicates
   [coll]
   (letfn
-    [(inner [[first & tail :as all] acc]
+    [(inner [[head & tail :as all] acc]
        (cond
          (empty? all) acc
-         (not= first (last' (last' acc))) (recur tail (add-new-sublist acc first))
-         :else (recur tail (append-to-last-sublist acc first))))
+         (not= head (last' (last' acc))) (recur tail (add-new-sublist acc head))
+         :else (recur tail (append-to-last-sublist acc head))))
      (add-new-sublist [acc new-element]
        (concat acc (list (list new-element))))
      (append-to-last-sublist [acc consecutive-element]
@@ -128,11 +128,11 @@
 ;; P10
 (defn encode [coll]
   (letfn
-    [(inner [[first & tail :as all] acc]
+    [(inner [[head & tail :as all] acc]
        (cond
          (empty? all) acc
-         (= (count' first) 1) (recur tail (concat acc (list (list 1 (last' first)))))
-         :else (recur tail (concat acc (list (list (count' first) (last' first)))))))]
+         (= (count' head) 1) (recur tail (concat acc (list (list 1 (last' head)))))
+         :else (recur tail (concat acc (list (list (count' head) (last' head)))))))]
     (inner (pack-consecutive-duplicates coll) '())))
 
 ;; P10
@@ -141,18 +141,18 @@
        (map (fn [sublist] (list (count sublist) (first sublist))))))
 
 
-;; P11
+;; P11 & P13
 (defn modified-encode [coll]
   (->> (encode' coll)
        (map (fn [sublist] (if (= 1 (first sublist)) (last sublist) sublist)))))
 ;; P12
 (defn decode [coll]
   (letfn
-    [(inner [[first & tail :as all] acc]
+    [(inner [[head & tail :as all] acc]
        (cond
          (empty? all) acc
-         (list? first) (recur tail (concat acc (expand first)))
-         :else (recur tail (concat acc (list first)))))
+         (list? head) (recur tail (concat acc (expand head)))
+         :else (recur tail (concat acc (list head)))))
      (expand [[repetitions element]]
        (repeat repetitions element))]
     (inner coll ())))
@@ -161,3 +161,23 @@
 (defn decode' [coll]
   (->> (map #(if (list? %) (repeat (first %) (last %)) %) coll)
     flatten))
+
+;; P13
+(defn duplicate-each [coll]
+  (letfn
+    [(inner [[head & tail :as all] acc]
+      (if (empty? all)
+        acc
+        (recur tail (concat acc (list head head)))))]
+    (inner coll '())))
+
+;; P13 - with built-in functions
+(defn duplicate-each' [coll]
+  ( ->> (map #(list % %) coll)
+        flatten))
+
+(defn duplicate-each'' [coll]
+  (reduce #(concat %1 (list %2 %2)) '() coll))
+
+(defn duplicate-each''' [coll]
+  (mapcat #(list % %) coll))

@@ -136,3 +136,12 @@
     (do
       (is (= (decode (list :a (list 2 :b) :c (list 2 :d) :b)) '(:a :b :b :c :d :d :b)))
       (is (= (decode' (list :a (list 2 :b) :c (list 2 :d) :b)) '(:a :b :b :c :d :d :b))))))
+
+
+(deftest duplicate-each-test
+  (testing "should duplicate each element of a given list"
+    (do
+      (is (= (duplicate-each '(:a :b :b :c :d :d :b)) '(:a :a :b :b :b :b :c :c :d :d :d :d :b :b)))
+      (is (= (duplicate-each' '(:a :b :b :c :d :d :b)) '(:a :a :b :b :b :b :c :c :d :d :d :d :b :b)))
+      (is (= (duplicate-each'' '(:a :b :b :c :d :d :b)) '(:a :a :b :b :b :b :c :c :d :d :d :d :b :b)))
+      (is (= (duplicate-each''' '(:a :b :b :c :d :d :b)) '(:a :a :b :b :b :b :c :c :d :d :d :d :b :b))))))
