@@ -162,7 +162,7 @@
   (->> (map #(if (list? %) (repeat (first %) (last %)) %) coll)
     flatten))
 
-;; P13
+;; P14
 (defn duplicate-each [coll]
   (letfn
     [(inner [[head & tail :as all] acc]
@@ -171,7 +171,7 @@
         (recur tail (concat acc (list head head)))))]
     (inner coll '())))
 
-;; P13 - with built-in functions
+;; P14 - with built-in functions
 (defn duplicate-each' [coll]
   ( ->> (map #(list % %) coll)
         flatten))
@@ -181,3 +181,16 @@
 
 (defn duplicate-each''' [coll]
   (mapcat #(list % %) coll))
+
+;; P15
+(defn duplicate-each-n-times [coll n]
+  (letfn
+    [(inner [[head & tail :as all] n acc]
+       (if (empty? all)
+         acc
+         (recur tail n (concat acc (repeat n head)))))]
+    (inner coll n '())))
+
+;; P15 - with built-in functions
+(defn duplicate-each-n-times' [coll n]
+  (mapcat #(repeat n %) coll))

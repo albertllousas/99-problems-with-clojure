@@ -145,3 +145,9 @@
       (is (= (duplicate-each' '(:a :b :b :c :d :d :b)) '(:a :a :b :b :b :b :c :c :d :d :d :d :b :b)))
       (is (= (duplicate-each'' '(:a :b :b :c :d :d :b)) '(:a :a :b :b :b :b :c :c :d :d :d :d :b :b)))
       (is (= (duplicate-each''' '(:a :b :b :c :d :d :b)) '(:a :a :b :b :b :b :c :c :d :d :d :d :b :b))))))
+
+(deftest duplicate-each-n-times-test
+  (testing "should duplicate each element of a given list"
+    (do
+      (is (= (duplicate-each-n-times '(:a :b) 3) '(:a :a :a :b :b :b)))
+      (is (= (duplicate-each-n-times' '(:a :b) 3) '(:a :a :a :b :b :b))))))
