@@ -156,3 +156,8 @@
      (expand [[repetitions element]]
        (repeat repetitions element))]
     (inner coll ())))
+
+;; P12 - with built-in functions
+(defn decode' [coll]
+  (->> (map #(if (list? %) (repeat (first %) (last %)) %) coll)
+    flatten))

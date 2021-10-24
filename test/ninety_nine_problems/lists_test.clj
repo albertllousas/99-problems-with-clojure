@@ -123,14 +123,16 @@
 
 (deftest modified-encode-test
   (testing "should do nothing for an empty list"
-    (do
-      (is (= (modified-encode '()) '()))))
+    (is (= (modified-encode '()) '())))
   (testing "should encode a list with consecutive duplicates, encoding only duplicates as [#element,element]"
-    (do
-      (is (= (modified-encode '(:a :b :b :c :d :d :b)) (list :a (list 2 :b) :c (list 2 :d) :b))))))
+    (is (= (modified-encode '(:a :b :b :c :d :d :b)) (list :a (list 2 :b) :c (list 2 :d) :b)))))
 
 (deftest decode-test
   (testing "should do nothing for an empty list"
-    (is (= (decode '()) '())))
+    (do
+      (is (= (decode '()) '()))
+      (is (= (decode' '()) '()))))
   (testing "should decode elements in a list like [#element,element] to the expanded version"
-    (is (= (decode (list :a (list 2 :b) :c (list 2 :d) :b)) '(:a :b :b :c :d :d :b)))))
+    (do
+      (is (= (decode (list :a (list 2 :b) :c (list 2 :d) :b)) '(:a :b :b :c :d :d :b)))
+      (is (= (decode' (list :a (list 2 :b) :c (list 2 :d) :b)) '(:a :b :b :c :d :d :b))))))
