@@ -211,3 +211,19 @@
   (->> (map-indexed #(hash-map :index %1 :value %2) coll)
        (filter #(not= 0 (rem (inc (get % :index)) n)))
        (map #(get % :value))))
+
+;; P17
+(defn split-at' [position coll]
+  (letfn
+    [(inner [position [head & tail :as all] index left-acc]
+       (cond
+         (empty? all) left-acc
+         (= (inc index) position) (list (concat left-acc (list head)) tail)
+         :else (recur position tail (inc index) (concat left-acc (list head)))))]
+    (inner position coll 0 '())))
+
+;; P17 - with built-in functions
+(defn split-at'' [position coll]
+  (if (<= 1 position (count coll))
+    (list (take position coll) (drop position coll))
+    coll))

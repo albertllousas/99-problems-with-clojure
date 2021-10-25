@@ -157,3 +157,13 @@
     (do
       (is (= (drop-every-nth '(:a :b :c :d :e :f :g :h :i :k) 3) '(:a :b :d :e :g :h :k)))
       (is (= (drop-every-nth' '(:a :b :c :d :e :f :g :h :i :k) 3) '(:a :b :d :e :g :h :k))))))
+
+(deftest split-at-test
+  (testing "should split a list into two parts; the length of the first part is given"
+    (do
+      (is (= (split-at' 3 '(:a :b :c :d :e :f :g :h :i :k)) (list (list :a :b :c) (list :d :e :f :g :h :i :k))))
+      (is (= (split-at'' 3 '(:a :b :c :d :e :f :g :h :i :k)) (list (list :a :b :c) (list :d :e :f :g :h :i :k))))))
+  (testing "should not split a list if position is out of range"
+    (do
+      (is (= (split-at' 11 '(:a :b :c :d :e :f :g :h :i :k)) '(:a :b :c :d :e :f :g :h :i :k)))
+      (is (= (split-at'' 11 '(:a :b :c :d :e :f :g :h :i :k)) '(:a :b :c :d :e :f :g :h :i :k))))))
