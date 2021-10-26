@@ -167,3 +167,9 @@
     (do
       (is (= (split-at' 11 '(:a :b :c :d :e :f :g :h :i :k)) '(:a :b :c :d :e :f :g :h :i :k)))
       (is (= (split-at'' 11 '(:a :b :c :d :e :f :g :h :i :k)) '(:a :b :c :d :e :f :g :h :i :k))))))
+
+(deftest slice-test
+  (testing "should extract a slice from a list"
+    (do
+      (is (= (slice '(:a :b :c :d :e :f :g :h :i :k) 3 7) '(:c :d :e :f :g)))
+      (is (= (slice' '(:a :b :c :d :e :f :g :h :i :k) 3 7) '(:c :d :e :f :g))))))

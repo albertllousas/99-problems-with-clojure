@@ -227,3 +227,18 @@
   (if (<= 1 position (count coll))
     (list (take position coll) (drop position coll))
     coll))
+
+;; P18
+(defn slice [coll start end]
+  (letfn
+    [(inner [[head & tail :as all] start end index acc]
+       (cond
+         (empty? all) acc
+         (<= start (inc index) end) (recur tail start end (inc index) (concat acc (list head)))
+         :else (recur tail start end (inc index) acc)))]
+    (inner coll start end 0 '())))
+
+;; P18 - with built-in functions
+(defn slice' [coll start end]
+    (->> (drop (dec start) coll)
+         (take (- (inc end) start))))
