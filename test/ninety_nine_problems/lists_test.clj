@@ -180,4 +180,8 @@
       (is (= (rotate-to-left '(:a :b :c :d :e :f :g :h) 3) '(:d :e :f :g :h :a :b :c)))
       (is (= (rotate-to-left '(:a :b :c :d :e :f :g :h) -2) '(:g :h :a :b :c :d :e :f ))))))
 
-
+(deftest remove-at-test
+  (testing "should remove the K'th element from a list"
+    (do
+      (is (= (remove-at 2 '(:a :b :c :d)) '(:a :c :d)))
+      (is (= (remove-at' 2 '(:a :b :c :d)) '(:a :c :d))))))

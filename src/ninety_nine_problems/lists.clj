@@ -254,3 +254,17 @@
     (if (< 0 places)
       (inner coll places 1 '())
       (inner coll (+ (count' coll) places) 1 '()))))
+
+;; P20
+(defn remove-at [position coll]
+  (letfn
+    [(inner [position [head & tail :as all] index acc]
+       (cond
+         (empty? all) acc
+         (= (inc index) position) (concat acc tail)
+         :else (recur position tail (inc index) (concat acc (list head)))))]
+    (inner position coll 0 '())))
+
+;; P20 - with built-in functions
+(defn remove-at' [position coll]
+  (concat (take (dec position) coll) (drop position coll)))
