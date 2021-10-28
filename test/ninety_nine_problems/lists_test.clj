@@ -173,3 +173,11 @@
     (do
       (is (= (slice '(:a :b :c :d :e :f :g :h :i :k) 3 7) '(:c :d :e :f :g)))
       (is (= (slice' '(:a :b :c :d :e :f :g :h :i :k) 3 7) '(:c :d :e :f :g))))))
+
+(deftest rotate-to-left-test
+  (testing "should rotate a list N places to the left"
+    (do
+      (is (= (rotate-to-left '(:a :b :c :d :e :f :g :h) 3) '(:d :e :f :g :h :a :b :c)))
+      (is (= (rotate-to-left '(:a :b :c :d :e :f :g :h) -2) '(:g :h :a :b :c :d :e :f ))))))
+
+

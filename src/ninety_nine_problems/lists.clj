@@ -160,21 +160,21 @@
 ;; P12 - with built-in functions
 (defn decode' [coll]
   (->> (map #(if (list? %) (repeat (first %) (last %)) %) coll)
-    flatten))
+       flatten))
 
 ;; P14
 (defn duplicate-each [coll]
   (letfn
     [(inner [[head & tail :as all] acc]
-      (if (empty? all)
-        acc
-        (recur tail (concat acc (list head head)))))]
+       (if (empty? all)
+         acc
+         (recur tail (concat acc (list head head)))))]
     (inner coll '())))
 
 ;; P14 - with built-in functions
 (defn duplicate-each' [coll]
-  ( ->> (map #(list % %) coll)
-        flatten))
+  (->> (map #(list % %) coll)
+       flatten))
 
 (defn duplicate-each'' [coll]
   (reduce #(concat %1 (list %2 %2)) '() coll))
@@ -240,5 +240,17 @@
 
 ;; P18 - with built-in functions
 (defn slice' [coll start end]
-    (->> (drop (dec start) coll)
-         (take (- (inc end) start))))
+  (->> (drop (dec start) coll)
+       (take (- (inc end) start))))
+
+;; P19
+(defn rotate-to-left [coll places]
+  (letfn
+    [(inner [[head & tail :as all] places position acc]
+       (cond
+         (empty? all) acc
+         (> position places) (concat all acc)
+         :else (recur tail places (inc position) (concat acc (list head)))))]
+    (if (< 0 places)
+      (inner coll places 1 '())
+      (inner coll (+ (count' coll) places) 1 '()))))
