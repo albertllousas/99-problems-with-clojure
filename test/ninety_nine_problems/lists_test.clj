@@ -185,3 +185,9 @@
     (do
       (is (= (remove-at 2 '(:a :b :c :d)) '(:a :c :d)))
       (is (= (remove-at' 2 '(:a :b :c :d)) '(:a :c :d))))))
+
+(deftest insert-at-test
+  (testing "should insert an element at a given position into a list"
+    (do
+      (is (= (insert-at 2 :alfa '(:a :b :c :d)) '(:a :alfa :b :c :d)))
+      (is (= (insert-at' 2 :alfa '(:a :b :c :d)) '(:a :alfa :b :c :d))))))

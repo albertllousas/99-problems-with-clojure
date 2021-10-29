@@ -268,3 +268,17 @@
 ;; P20 - with built-in functions
 (defn remove-at' [position coll]
   (concat (take (dec position) coll) (drop position coll)))
+
+;; P21
+(defn insert-at [position element coll]
+  (let [split-coll (split-at' (dec position) coll)]
+    (concat (first split-coll) (list element) (last' split-coll))))
+
+(defn insert-at' [position element coll]
+  (letfn
+    [(inner [position element [head & tail :as all] index acc]
+       (cond
+         (empty? all) acc
+         (= (inc index) position) (concat acc (list element) all)
+         :else (recur position element tail (inc index) (concat acc (list head)))))]
+    (inner position element coll 0 '())))
