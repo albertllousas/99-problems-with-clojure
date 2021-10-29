@@ -191,3 +191,13 @@
     (do
       (is (= (insert-at 2 :alfa '(:a :b :c :d)) '(:a :alfa :b :c :d)))
       (is (= (insert-at' 2 :alfa '(:a :b :c :d)) '(:a :alfa :b :c :d))))))
+
+(deftest range-test
+  (testing "should create a list containing all integers within a given range"
+    (do
+      (is (= (range' 4 9) '(4 5 6 7 8 9)))
+      (is (= (range'' 4 9) '(4 5 6 7 8 9)))))
+  (testing "should not create a list when the range is wrong"
+    (do
+      (is (= (range' 4 -9) '()))
+      (is (= (range'' 4 -9) '())))))

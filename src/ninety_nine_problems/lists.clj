@@ -282,3 +282,18 @@
          (= (inc index) position) (concat acc (list element) all)
          :else (recur position element tail (inc index) (concat acc (list head)))))]
     (inner position element coll 0 '())))
+
+;; P22
+(defn range' [start end]
+  (letfn
+    [(inner [current end acc]
+       (if (= current end)
+         (concat acc (list current))
+         (recur (inc current) end (concat acc (list current)))))]
+    (if (< start end)
+      (inner start end '())
+      '())))
+
+;; P22 - with built-in functions
+(defn range'' [start end]
+   (take (- end (dec start)) (iterate inc start)))
